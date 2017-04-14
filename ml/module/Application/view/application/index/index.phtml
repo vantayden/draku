@@ -7,7 +7,7 @@
                 <li class="divider"></li>
                 <li><a href="#!" class="red-text" onclick="logout();"><i class="fa fa-sign-out"></i>Đăng xuất</a></li>
             </ul>
-            <a class="btn-floating btn-large halfway-fab waves-effect waves-light red"><i class="fa fa-plus"></i></a>
+            <a class="btn-floating btn-large halfway-fab waves-effect waves-light red" href="#add_transaction"><i class="fa fa-plus"></i></a>
           <div class="row center">
             <a class='btn btn-flat white-text' href='#wallet' style="display: table; margin: 0 auto; text-align: center;"><img src="./img/wallet.png" style="width:60px;margin: 0 auto;"><br><i id="wallet_name"></i></a><br><span id="wallet_balance" class="white-text"></span>
           </div>
@@ -89,6 +89,50 @@
     </div>
 </div>
 
+<div id="category" class="modal modal-addition">
+    <div class="modal-content red lighten-2 white-text">
+        <h4>Category</h4>
+    </div>
+    <div class="modal-content">
+		<div class="col s12">
+		  <ul class="tabs">
+			<li class="tab col s2"><a class="active" href="#category_list_expense">Expense</a></li>
+			<li class="tab col s2"><a href="#category_list_income">Income</a></li>
+		  </ul>
+		</div>
+		<div class="row" id="category_list_expense">
+		</div>
+		<div class="row" id="category_list_income">
+		</div>
+    </div>
+</div>
+
+<div id="add_transaction" class="modal" >
+    <div class="modal-content red lighten-2 white-text">
+        <h4>Add wallet</h4>
+    </div>
+    <div class="modal-content">
+		 <div class="row">
+		<form class="col s12" onsubmit="return false">
+		<div class="input-field col s12">
+          <i class="fa fa-money prefix"></i>
+          <input id="add_transaction_name" type="text" placeholder="Your wallet name?" required>
+        </div>
+		<div class="input-field col s12" onclick="$('#currency').modal('open');">
+          <i class="fa fa-dollar prefix" id="currency_icon"></i>
+          <input id="add_transaction_currency" type="text" placeholder="Currency" disabled>
+          <input id="add_transaction_currency_id" type="hidden">
+        </div>
+		<div class="input-field col s12">
+          <i class="fa fa-money prefix"></i>
+          <input id="add_transaction_startAmount" type="text" placeholder="Start amount" required>
+        </div>
+		  <button id="add_transaction_button" class="modal-action waves-effect waves-light btn red lighten-2">Add</a>
+		</form>
+	  </div>
+        
+    </div>
+</div>
 <div id="add_wallet" class="modal" >
     <div class="modal-content red lighten-2 white-text">
         <h4>Add wallet</h4>

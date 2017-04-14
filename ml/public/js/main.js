@@ -13,12 +13,15 @@ $( document ).ready(function() {
 			updateUserInfo();
 		});
 	} else updateUserInfo();
-	if(!get('currency')){
+	if(!get('currency') && !get('category')){
 		doGet('api/currency/all', result=>{
 		   set('currency', JSON.stringify(result));
-		   updateCurrency();
 		});
-	} else updateCurrency();
+		doGet('api/category/all', result=>{
+		   set('category', JSON.stringify(result));
+		   updateCC();
+		});
+	} else updateCC();
 		
 	$('#my_account_button').on('click', ()=>{
 		if($('#my_account_new_password').val() != $('#my_account_new_password_retype').val())
@@ -125,7 +128,7 @@ function updateUserInfo(){
 	$('#my_account_name').val(result.name);
 }
 
-function updateCurrency(){
+function updateCC(){
 	let result = JSON.parse(get('currency'));
 	$('#currency_list').html('');
 	result.currency.forEach((item, index)=>{
@@ -137,6 +140,29 @@ function updateCurrency(){
 			</span>\
 		</div>\
 		');
+	});
+	result = JSON.parse(get('category'));
+	$('#catetgory_list_expense').html('');
+	$('#catetgory_list_income').html('');
+	result.category.forEach((item, index)=>{
+		if(item.type == 0)
+			$('#category_list_expense').append('\
+			<div class="col s3 center category">\
+				<img class="circle responsive-img" src="img/'+item.icon+'.png" alt="'+item.name+'"><br>\
+				<span>\
+				'+item.name+'\
+				</span>\
+			</div>\
+			');
+		else 
+			$('#category_list_income').append('\
+			<div class="col s3 center">\
+				<img class="circle responsive-img" src="img/'+item.icon+'.png" alt="'+item.name+'"><br>\
+				<span>\
+				'+item.name+'\
+				</span>\
+			</div>\
+			');
 	});
 }
 function setCurrency(result){

@@ -432,5 +432,5 @@ body {
 }
 
 .modal {width: 30% !important ; min-width:300px !important ; }
-.modal_addition {width: 50% !important ; min-width: 300px !important ;}
-.wallet:hover, .currency:hover {background:#eeeeee;}
+.modal_addition {width: 60% !important ; min-width: 300px !important ;}
+.wallet:hover, .category:hover, .currency:hover {background:#eeeeee;}
