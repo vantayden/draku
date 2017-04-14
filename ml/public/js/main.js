@@ -2,6 +2,9 @@ $( document ).ready(function() {
     if(!get('session'))
         window.location.replace("./login");
     $('.modal').modal();
+	$('#currency').modal({
+      dismissible: false
+    });
 	if(!get('userInfo')){
 		doGet('api/user/info', result=>{
 			if(result.error)
@@ -9,8 +12,14 @@ $( document ).ready(function() {
 		   set('userInfo', JSON.stringify(result));
 			updateUserInfo();
 		});
-	}
-	updateUserInfo();
+	} else updateUserInfo();
+	if(!get('currency')){
+		doGet('api/currency/all', result=>{
+		   set('currency', JSON.stringify(result));
+		   updateCurrency();
+		});
+	} else updateCurrency();
+		
 	$('#my_account_button').on('click', ()=>{
 		if($('#my_account_new_password').val() != $('#my_account_new_password_retype').val())
 			noti('Mật khẩu nhập lại không đúng');
@@ -29,12 +38,56 @@ $( document ).ready(function() {
 			$('#my_account_new_password').val('');
 			$('#my_account_new_password_retype').val('');
 		}
+	});		
+	$('#add_wallet_button').on('click', ()=>{
+		let data = {'name' : $('#add_wallet_name').val(), 'currency' : $('#add_wallet_currency_id').val(), 'startAmount' : $('#add_wallet_startAmount').val()}
+		doPost('api/wallet/add', data, result =>{
+			if(!result.error){
+				$('#add_wallet').modal('close');
+				updateWallet();
+			}
+			noti(result.message);
+		});
 	});
-    doGet('api/wallet/all', result=>{
-        $('#wallet_name').html(result.wallet[0].name);
-        $('#wallet_balance').html(moneyFormat(result.wallet[0].balance)+' '+result.wallet[0].currency);
-    });
+	updateWallet();
+    
 });
+function updateWallet(){
+	doGet('api/wallet/all', result=>{
+		$('#wallet_list').html('');
+		if(!result.error)
+			result.wallet.forEach((item, index)=>{
+				$('#wallet_list').append('\
+	<div class="col s12 wallet" onclick="setCurrent('+item.id+');">\
+        <div class="card-panel grey lighten-5 z-depth-1">\
+          <div class="row valign-wrapper">\
+            <div class="col s2">\
+              <img src="img/wallet.png" alt="wallet" class="circle responsive-img">\
+            </div>\
+            <div class="col s10">\
+              <span class="black-text">\
+                <h5>'+item.name+' - <small>'+moneyFormat(item.balance)+' '+item.currency+'</small></h5>\
+              </span>\
+            </div>\
+          </div>\
+        </div>\
+      </div>');
+	  if(item.current == 1){
+        $('#wallet_name').html(item.name);
+        $('#wallet_balance').html(moneyFormat(item.balance)+' '+item.currency);
+	  }
+			});
+    });
+}
+function setCurrent($id){
+	doGet('api/wallet/current/'+$id, result =>{
+		if(!result.error){
+			$('#wallet').modal('close');
+			updateWallet();
+		}
+		noti(result.message);
+	});
+}
 // Money Formatting
 Number.prototype.formatMoney = function (c, d, t) {
     var n = this,
@@ -72,10 +125,30 @@ function updateUserInfo(){
 	$('#my_account_name').val(result.name);
 }
 
+function updateCurrency(){
+	let result = JSON.parse(get('currency'));
+	$('#currency_list').html('');
+	result.currency.forEach((item, index)=>{
+		$('#currency_list').append('\
+		<div class="col s3 center currency" data-icon="'+item.icon+'" onclick="setCurrency({id:'+item.id+', name:\''+item.name+'\', icon:\''+item.icon+'\'});">\
+			<img class="circle responsive-img" src="img/'+item.icon+'.png" alt="'+item.name+'"><br>\
+			<span>\
+			'+item.short+'\
+			</span>\
+		</div>\
+		');
+	});
+}
+function setCurrency(result){
+	$('#add_wallet_currency_id').val(result.id);
+	$('#add_wallet_currency').val(result.name);
+	$('#currency_icon').html('').removeClass('fa').removeClass('fa-dollar').append('<img class="circle responsive-img" src="img/'+result.icon+'.png">');
+	$('#currency').modal('close');
+	
+}
 function logout(){
     remove('session');
-    remove('name');
-    remove('email');
+    remove('userInfo');
     window.location.replace("./login");
 }
 function noti(msg){

@@ -431,4 +431,6 @@ body {
     margin-top: 16px
 }
 
-.modal {width: 30% !important ; min-width:300px !important ; overflow-y: hidden !important ;}
+.modal {width: 30% !important ; min-width:300px !important ; }
+.modal_addition {width: 50% !important ; min-width: 300px !important ;}
+.wallet:hover, .currency:hover {background:#eeeeee;}

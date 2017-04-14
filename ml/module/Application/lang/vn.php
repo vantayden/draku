@@ -11,6 +11,7 @@ function lang(){
     $lang['session_exprired'] = 'Session đã hết hạn';
     $lang['wallet_add_successful'] = 'Tạo ví thành công';
     $lang['wallet_update_successful'] = 'Cập nhật ví thành công';
+    $lang['wallet_set_current_successful'] = 'Đã cài ví thành mặc định';
     $lang['wallet_delete_successful'] = 'Xóa ví thành công';
     $lang['transaction_add_successful'] = 'Tạo giao dịch thành công';
     $lang['transaction_update_successful'] = 'Cập nhật giao dịch thành công';

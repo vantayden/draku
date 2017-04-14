@@ -14,13 +14,12 @@ class Currency{
         return $this->result(false, $this->lang['currency_add_successful']);
     }
 
-
     public function all(){
         $result = array('category' => array());
         $sql = "SELECT * FROM `currency`";
         $category = $this->db->query($sql);
         while($cat = $category->fetch_assoc()){
-            $result['category'][] = $cat;
+            $result['currency'][] = $cat;
         }
         return $result;
     }

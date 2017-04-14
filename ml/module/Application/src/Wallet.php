@@ -10,7 +10,9 @@ class Wallet{
     }
 
     public function add($data){
-        $sql = "INSERT INTO `wallet` (`name`, `currency`, `startAmount`, `user`) VALUES ('{$data['name']}', '{$data['currency']}', '{$data['startAmount']}', '{$data['user']}')";
+		$count_wallet = $this->db->query("SELECT id FROM wallet WHERE `user` = '{$data['user']}'")->num_rows;
+		$current = ($count_wallet == 0) ? 1 : 0;
+        $sql = "INSERT INTO `wallet` (`name`, `currency`, `startAmount`, `user`, `current`) VALUES ('{$data['name']}', '{$data['currency']}', '{$data['startAmount']}', '{$data['user']}', '{$current}')";
         $this->db->query($sql);
         return $this->result(false, $this->lang['wallet_add_successful']);
     }
@@ -28,6 +30,14 @@ class Wallet{
         return $this->result(false, $this->lang['wallet_update_successful']);
     }
 
+    public function current($id){
+		$wallet = $this->db->query("SELECT * FROM wallet WHERE `id` = '{$id}'")->fetch_array();
+		$this->db->query("UPDATE `wallet` SET `current` = '0' WHERE `user` = '{$wallet['user']}'");
+        $sql = "UPDATE `wallet` SET `current` = 1 WHERE `id` = '{$id}'";
+        $this->db->query($sql);
+        return $this->result(false, $this->lang['wallet_set_current_successful']);
+    }
+	
     public function all($data){
         $result = array('wallet' => array());
         $wallet = $this->db->query("SELECT * FROM `wallet` WHERE `user` = '{$data['user']}'");

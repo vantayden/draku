@@ -312,6 +312,17 @@ class APIController extends AbstractActionController
                         }
                     }
                     break;
+                case 'current':
+                    if($this->method != 'GET' || $wallet == ''){
+                        $result = $this->Error;
+                    } else {
+                        if($user != $Wallet->owner($wallet))
+                            return $this->Error;
+                        else{
+                            return $Wallet->current($wallet);
+                        }
+                    }
+                    break;
                 case 'update':
                     if($this->method != 'POST'){
                         $result = $this->Error;
