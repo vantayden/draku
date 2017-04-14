@@ -430,3 +430,5 @@ body {
 #index-banner h1 {
     margin-top: 16px
 }
+
+.modal {width: 30% !important ; min-width:300px !important ; overflow-y: hidden !important ;}

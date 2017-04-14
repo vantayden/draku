@@ -3,7 +3,7 @@
             <a class='dropdown-button btn btn-flat white-text' id="name" href='#' data-activates='dropdown1' style="margin: 10px"><i class="fa fa-user"></i></a>
             <!-- Dropdown Structure -->
             <ul id='dropdown1' class='dropdown-content' style="margin: 10px">
-                <li><a href="#account" class="red-text"><i class="fa fa-user"></i>Tài khoản</a></li>
+                <li><a href="#my_account" class="red-text"><i class="fa fa-user"></i>Tài khoản</a></li>
                 <li class="divider"></li>
                 <li><a href="#!" class="red-text" onclick="logout();"><i class="fa fa-sign-out"></i>Đăng xuất</a></li>
             </ul>
@@ -24,12 +24,44 @@
         </div>
 </div>
 
-<div id="account" class="modal" >
-    <div class="modal-content">
-        <h4>Modal Header</h4>
-        <p>A bunch of text</p>
+<div id="my_account" class="modal" >
+    <div class="modal-content red lighten-2 white-text">
+        <h4>My Account</h4>
     </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+    <div class="modal-content">
+		 <div class="row">
+		<form class="col s12" onsubmit="return false">
+		  <div class="row">
+			<div class="input-field col s12">
+			  <input id="my_account_email" value="" type="email" disabled>
+			  <label for="my_account_email">Email</label>
+			</div>
+		  </div>
+		  <div class="row">
+			<div class="input-field col s12">
+			  <input id="my_account_name" type="text">
+			  <label for="my_account_name">Your name</label>
+			</div>
+		  </div>
+		  <div class="row">
+			<div class="input-field col s12">
+			  <input id="my_account_old_password" type="password" required>
+			  <label for="my_account_old_password">Current Password</label>
+			</div>
+		  </div>
+		  <div class="row">
+			<div class="input-field col s6">
+			  <input id="my_account_new_password" type="password">
+			  <label for="my_account_new_password">New Password</label>
+			</div>
+			<div class="input-field col s6">
+			  <input id="my_account_new_password_retype" type="password">
+			  <label for="my_account_new_password_retype">Retype New Password</label>
+			</div>
+		  </div>
+		  <button id="my_account_button" class="modal-action waves-effect waves-light btn red lighten-2">Update</a>
+		</form>
+	  </div>
+        
     </div>
 </div>

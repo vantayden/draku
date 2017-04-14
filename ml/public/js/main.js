@@ -2,13 +2,34 @@ $( document ).ready(function() {
     if(!get('session'))
         window.location.replace("./login");
     $('.modal').modal();
-    doGet('api/user/info', result=>{
-        if(result.error)
-            logout();
-        $('#name').html('<i class="fa fa-user"></i> ' + result.name);
-       set('name', result.name);
-       set('email', result.email);
-    });
+	if(!get('userInfo')){
+		doGet('api/user/info', result=>{
+			if(result.error)
+				logout();
+		   set('userInfo', JSON.stringify(result));
+			updateUserInfo();
+		});
+	}
+	updateUserInfo();
+	$('#my_account_button').on('click', ()=>{
+		if($('#my_account_new_password').val() != $('#my_account_new_password_retype').val())
+			noti('Mật khẩu nhập lại không đúng');
+		else if($('#my_account_old_password').val()){
+			let data = {'old_password' : $('#my_account_old_password').val()}
+			if($('#my_account_name').val())
+				data.name = $('#my_account_name').val();
+			if($('#my_account_new_password').val())
+				data.new_password = $('#my_account_new_password').val();
+			doPost('api/user/update', data, result =>{
+				if(!result.error)
+					$('#my_account').modal('close');
+				noti(result.message);
+			});
+			$('#my_account_old_password').val('');
+			$('#my_account_new_password').val('');
+			$('#my_account_new_password_retype').val('');
+		}
+	});
     doGet('api/wallet/all', result=>{
         $('#wallet_name').html(result.wallet[0].name);
         $('#wallet_balance').html(moneyFormat(result.wallet[0].balance)+' '+result.wallet[0].currency);
@@ -43,6 +64,14 @@ function moneyFormat(num) {
 function unMoneyFormat(amount) {
     return Number(amount.replace(/[^0-9.-]+/g, '')).toFixed(2);
 }
+
+function updateUserInfo(){
+	let result = JSON.parse(get('userInfo'));
+	$('#name').html('<i class="fa fa-user"></i> ' + result.name);
+	$('#my_account_email').val(result.email);
+	$('#my_account_name').val(result.name);
+}
+
 function logout(){
     remove('session');
     remove('name');
