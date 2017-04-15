@@ -165,17 +165,17 @@ class APIController extends AbstractActionController
             $this->data['user'] = $user;
             switch ($this->do) {
                 case 'add':
-                    if ($this->method != 'POST' || !$this->postValidate($this->data, $this->validate['wallet_add'])) {
+                    if ($this->method != 'POST' || !$this->postValidate($this->data, $this->validate['transaction_add'])) {
                         $result = $this->Error;
                     } else {
                         return $Transaction->add($this->data);
                     }
                     break;
                 case 'all':
-                    if ($this->method != 'POST') {
+                    if ($this->method != 'GET') {
                         $result = $this->Error;
                     } else {
-                        return $Transaction->all($this->data['wallet']);
+                        return $Transaction->all($transaction);
                     }
                     break;
                 case 'info':

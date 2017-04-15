@@ -15,6 +15,12 @@ class Category{
     }
 
 
+    public function find($id){
+        $sql = "SELECT * FROM `category` WHERE `id` = '{$id}'";
+        $category = $this->db->query($sql)->fetch_array();
+        return $category;
+    }
+
     public function all(){
         $result = array('category' => array());
         $sql = "SELECT * FROM `category`";

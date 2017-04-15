@@ -9,23 +9,28 @@
             </ul>
             <a class="btn-floating btn-large halfway-fab waves-effect waves-light red" href="#add_transaction"><i class="fa fa-plus"></i></a>
           <div class="row center">
-            <a class='btn btn-flat white-text' href='#wallet' style="display: table; margin: 0 auto; text-align: center;"><img src="./img/wallet.png" style="width:60px;margin: 0 auto;"><br><i id="wallet_name"></i></a><br><span id="wallet_balance" class="white-text"></span>
+            <a class='btn btn-flat white-text' href='#wallet' style="display: table; margin: 0 auto; text-align: center;"><img src="img/wallet.png" style="width:60px;margin: 0 auto;"><br><i id="wallet_name"></i></a><span id="wallet_balance" class="white-text"></span>
+              <input id="current_wallet" type="hidden">
           </div>
           <br>
+            <!--
 			  <div class="row">
-				<div class="col s8 offset-s2">
+				<div class="col m8 offset-m2 s12">
 				  <ul class="tabs" style="overflow-x:hidden;">
-					<li class="tab col s4"><a href="#test1">Last Month</a></li>
-					<li class="tab col s4"><a class="active" href="#test2">This month</a></li>
-					<li class="tab col s4"><a href="#test3">Future</a></li>
+					<li class="tab col s4"><a href="#">Past</a></li>
+					<li class="tab col s4"><a class="active" href="#">This month</a></li>
+					<li class="tab col s4"><a href="#">Future</a></li>
 				  </ul>
 				</div>
 			  </div>
+          -->
         </div>
 </div>
-
-<div id="my_account" class="modal">
-    <div class="modal-content red lighten-2 white-text">
+<br>
+<div class="container" id="transaction_list">
+</div>
+<div id="my_account" class="modal modal-fixed-footer">
+    <div class="modal-header red lighten-2 white-text">
         <h4>My Account</h4>
     </div>
     <div class="modal-content">
@@ -59,15 +64,16 @@
 			  <label for="my_account_new_password_retype">Retype New Password</label>
 			</div>
 		  </div>
-		  <button id="my_account_button" class="modal-action waves-effect waves-light btn red lighten-2">Update</a>
-		</form>
 	  </div>
-        
     </div>
+    <div class="modal-footer">
+        <button id="my_account_button" class="modal-action waves-effect waves-light btn red lighten-2">Update</button>
+    </div>
+    </form>
 </div>
 
-<div id="wallet" class="modal" >
-    <div class="modal-content red lighten-2 white-text">
+<div id="wallet" class="modal modal-fixed-footer" >
+    <div class="modal-header red lighten-2 white-text">
         <h4>Select Wallet</h4>
     </div>
     <div class="modal-content">
@@ -80,7 +86,7 @@
 </div>
 
 <div id="currency" class="modal modal-addition">
-    <div class="modal-content red lighten-2 white-text">
+    <div class="modal-header red lighten-2 white-text">
         <h4>Currency</h4>
     </div>
     <div class="modal-content">
@@ -89,52 +95,113 @@
     </div>
 </div>
 
-<div id="category" class="modal modal-addition">
-    <div class="modal-content red lighten-2 white-text">
+<div id="category" class="modal modal-addition modal-fixed-footer">
+    <div class="modal-header red lighten-2 white-text">
         <h4>Category</h4>
     </div>
     <div class="modal-content">
-		<div class="col s12">
-		  <ul class="tabs">
-			<li class="tab col s2"><a class="active" href="#category_list_expense">Expense</a></li>
-			<li class="tab col s2"><a href="#category_list_income">Income</a></li>
-		  </ul>
-		</div>
 		<div class="row" id="category_list_expense">
 		</div>
 		<div class="row" id="category_list_income">
 		</div>
     </div>
+    <div class="modal-footer red lighten-2">
+        <div class="col s12">
+            <ul class="tabs red lighten-2">
+                <li class="tab col s6"><a class="active white-text" href="#category_list_expense">Expense</a></li>
+                <li class="tab col s6"><a class="white-text" href="#category_list_income">Income</a></li>
+            </ul>
+        </div>
+    </div>
 </div>
 
-<div id="add_transaction" class="modal" >
-    <div class="modal-content red lighten-2 white-text">
-        <h4>Add wallet</h4>
+<div id="add_transaction" class="modal modal-fixed-footer" >
+    <div class="modal-header red lighten-2 white-text">
+        <h4>Add Transaction</h4>
     </div>
     <div class="modal-content">
 		 <div class="row">
 		<form class="col s12" onsubmit="return false">
-		<div class="input-field col s12">
-          <i class="fa fa-money prefix"></i>
-          <input id="add_transaction_name" type="text" placeholder="Your wallet name?" required>
-        </div>
-		<div class="input-field col s12" onclick="$('#currency').modal('open');">
-          <i class="fa fa-dollar prefix" id="currency_icon"></i>
-          <input id="add_transaction_currency" type="text" placeholder="Currency" disabled>
-          <input id="add_transaction_currency_id" type="hidden">
+        <div class="input-field col s12" onclick="$('#category').modal('open');">
+            <i class="prefix" id="update_add_category_icon"><img class="circle responsive-img" src="img/icon_not_selected.png"></i>
+            <input id="add_transaction_category" type="text" placeholder="Category" required>
+            <input id="add_transaction_category_id" type="hidden">
         </div>
 		<div class="input-field col s12">
-          <i class="fa fa-money prefix"></i>
-          <input id="add_transaction_startAmount" type="text" placeholder="Start amount" required>
+          <i class="fa fa-dollar prefix"></i>
+          <input id="add_transaction_amount" type="number" placeholder="How much?" required>
         </div>
-		  <button id="add_transaction_button" class="modal-action waves-effect waves-light btn red lighten-2">Add</a>
-		</form>
+		<div class="input-field col s12">
+          <i class="fa fa-pencil prefix"></i>
+          <input id="add_transaction_note" type="text" placeholder="Note" required>
+        </div>
+        <div class="input-field col s12">
+            <i class="fa fa-calendar prefix"></i>
+            <input id="add_transaction_date" type="date" placeholder="Date" class="datepicker" required>
+        </div>
+        <div class="input-field col s12" onclick="$('#wallet').modal('open');">
+            <i class="prefix" id="category_icon"><img class="circle responsive-img" src="img/wallet.png"></i>
+            <input id="add_transaction_wallet" type="text" placeholder="Wallet">
+            <input id="add_transaction_wallet_id" type="hidden">
+        </div>
 	  </div>
         
     </div>
+
+    <div class="modal-footer">
+        <button id="add_transaction_button" class="modal-action waves-effect waves-light btn red lighten-2">Add</button>
+    </div>
+    </form>
 </div>
-<div id="add_wallet" class="modal" >
-    <div class="modal-content red lighten-2 white-text">
+
+<div id="update_transaction" class="modal modal-fixed-footer" >
+    <div class="modal-header red lighten-2 white-text row">
+        <div class="col s10">
+            <h4>Edit Transaction</h4>
+        </div>
+        <div class="col s2">
+            <a href="#" id="update_transaction_delete" class="white-text">
+                <i class="fa fa-trash right-align center fa-3x"></i>
+            </a>
+        </div>
+    </div>
+    <div class="modal-content">
+        <div class="row">
+            <form class="col s12" onsubmit="return false">
+                <input id="update_transaction_id" type="hidden">
+                <div class="input-field col s12" onclick="$('#category').modal('open');">
+                    <i class="prefix" id="update_transaction_category_icon"><img class="circle responsive-img" src="img/icon_not_selected.png"></i>
+                    <input id="update_transaction_category" type="text" placeholder="Category" required>
+                    <input id="update_transaction_category_id" type="hidden">
+                </div>
+                <div class="input-field col s12">
+                    <i class="fa fa-dollar prefix"></i>
+                    <input id="update_transaction_amount" type="number" placeholder="How much?" required>
+                </div>
+                <div class="input-field col s12">
+                    <i class="fa fa-pencil prefix"></i>
+                    <input id="update_transaction_note" type="text" placeholder="Note" required>
+                </div>
+                <div class="input-field col s12">
+                    <i class="fa fa-calendar prefix"></i>
+                    <input id="update_transaction_date" type="date" placeholder="Date" class="datepicker" required>
+                </div>
+                <div class="input-field col s12" onclick="$('#wallet').modal('open');">
+                    <i class="prefix" id="category_icon"><img class="circle responsive-img" src="img/wallet.png"></i>
+                    <input id="update_transaction_wallet" type="text" placeholder="Wallet">
+                    <input id="update_transaction_wallet_id" type="hidden">
+                </div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button id="update_transaction_button" class="modal-action waves-effect waves-light btn red lighten-2">Update</button>
+    </div>
+    </form>
+</div>
+<div id="add_wallet" class="modal modal-fixed-footer">
+    <div class="modal-header red lighten-2 white-text">
         <h4>Add wallet</h4>
     </div>
     <div class="modal-content">
@@ -146,16 +213,19 @@
         </div>
 		<div class="input-field col s12" onclick="$('#currency').modal('open');">
           <i class="fa fa-dollar prefix" id="currency_icon"></i>
-          <input id="add_wallet_currency" type="text" placeholder="Currency" disabled>
+          <input id="add_wallet_currency" type="text" placeholder="Currency" required>
           <input id="add_wallet_currency_id" type="hidden">
         </div>
 		<div class="input-field col s12">
           <i class="fa fa-money prefix"></i>
-          <input id="add_wallet_startAmount" type="text" placeholder="Start amount" required>
+          <input id="add_wallet_startAmount" type="number" placeholder="Start amount" required>
         </div>
-		  <button id="add_wallet_button" class="modal-action waves-effect waves-light btn red lighten-2">Add</a>
-		</form>
+
 	  </div>
-        
     </div>
+
+    <div class="modal-footer">
+        <button id="add_wallet_button" class="modal-action waves-effect waves-light btn red lighten-2">Add</button>
+    </div>
+    </form>
 </div>
